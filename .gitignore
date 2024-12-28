@@ -159,6 +159,8 @@ cython_debug/
 .idea/
 *pdf
 results/
+!results/.gitkeep
 reports/
+!reports/.gitkeep
 *.png
 !images/*.png

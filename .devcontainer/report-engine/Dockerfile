@@ -33,10 +33,8 @@ RUN if ! cat /etc/group | grep -e "^pip-global:" > /dev/null 2>&1; then groupadd
 # Create directory and set permission
 RUN mkdir /opt/report-engine \ 
     && chown -R vscode:vscode /opt/report-engine
-RUN mkdir /opt/report-engine/.vscode /opt/report-engine/src \
-    && chown vscode:vscode /opt/report-engine/.vscode /opt/report-engine/src
-RUN mkdir /opt/report-engine/src/reports /opt/report-engine/src/results \
-    && chown vscode:vscode /opt/report-engine/src/reports /opt/report-engine/src/results
+RUN mkdir /opt/report-engine/.vscode \
+    && chown vscode:vscode /opt/report-engine/.vscode
 RUN mkdir /home/vscode/.vscode-server \
     && chown vscode:vscode /home/vscode/.vscode-server
 

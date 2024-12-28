@@ -6,11 +6,11 @@ services:
       context: "../"
       dockerfile: ./.devcontainer/report-engine/Dockerfile
       args:
-        # Update 'VARIANT' to pick a Python version: 3, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12
+        # Update 'VARIANT' to pick a Python version: 3, 3.10, 3.11, 3.12
         # Available image variants: https://github.com/microsoft/vscode-dev-containers/blob/main/containers/python-3/README.md
         VARIANT: "3"
     volumes:
-      - ..:/opt/report-engine/src:cached
+      - ..:/opt/report-engine/code:cached
       - ../.devcontainer/report-engine/.vscode:/opt/report-engine/.vscode:cached
     depends_on:
       - lb
@@ -23,3 +23,5 @@ services:
       - ../.devcontainer/nginx/conf.d:/etc/nginx/conf.d:cached
     ports:
       - 80:80
+    restart: always
+

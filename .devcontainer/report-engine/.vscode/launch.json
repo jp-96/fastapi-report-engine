@@ -7,9 +7,9 @@
     "configurations": [
         {
             "name": "report engine",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "/opt/report-engine/src",
+            "cwd": "/opt/report-engine/code",
             "program": "main.py",
             "console": "integratedTerminal"
         }
