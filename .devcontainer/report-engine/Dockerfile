@@ -40,9 +40,49 @@ RUN mkdir /home/vscode/.vscode-server \
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends unzip poppler-utils libreoffice
+    && apt-get -y install --no-install-recommends unzip poppler-utils
+
+# Install several additional components and Python libs:
+#  - a Java Runtime Environment (JRE), which can be OpenJDK,
+#  - Libreoffice started in the background in headless mode,
+#  - the Java driver for Libreoffice (Juno).
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+		# Installation of Libreoffice, JRE and required Java libs on Debian/Ubuntu:
+		default-jre \
+		libreoffice-java-common \
+		libreoffice-writer \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 COPY requirements.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
     && rm -rf /tmp/pip-tmp
+
+# Install fonts
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+		# Google Fonts - https://fonts.google.com/noto
+		fonts-noto-cjk \
+		# To have the special unicode symbols for phone/fax/email
+		fonts-symbola \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Japanese fonts
+# ###################################
+#   IPA FONT LICENSE AGREEMENT V1.0
+# https://moji.or.jp/ipafont/license/
+# ###################################
+ADD archiveipa /usr/local/archiveipa
+USER vscode
+RUN mkdir -p ~/.local/share/fonts
+RUN cd /usr/local/archiveipa \
+	# IPAmj Mincho Font
+    && unzip ipamjm00601.zip -d ~/.local/share/fonts/ipamjm00601 \
+    # IPAex Font（2 fonts）
+    && unzip IPAexfont00401.zip -d ~/.local/share/fonts/IPAexfont00401 \
+    # IPA Font（4 fonts）
+    && unzip IPAfont00303.zip -d ~/.local/share/fonts/IPAfont00303 \
+    # Build font information cache files
+    && fc-cache -vf
+USER root

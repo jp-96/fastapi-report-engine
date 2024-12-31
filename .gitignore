@@ -162,5 +162,7 @@ results/
 !results/.gitkeep
 reports/
 !reports/.gitkeep
+templates/
+!templates/.gitkeep
 *.png
 !images/*.png
